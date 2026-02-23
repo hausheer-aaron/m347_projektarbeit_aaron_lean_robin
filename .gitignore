@@ -1,0 +1,11 @@
+# Build-Ausgaben
+bin/
+obj/
+ 
+# Benutzer- & IDE-Dateien
+.vs/
+*.user
+*.suo
+ 
+# Konfiguration
+appsettings.Development.json
