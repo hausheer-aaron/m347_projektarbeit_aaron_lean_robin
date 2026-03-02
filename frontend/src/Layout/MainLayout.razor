@@ -1,0 +1,52 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="_theme" IsDarkMode="true" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudPopoverProvider />
+
+<div style="min-height:100vh; display:flex; flex-direction:column; background:#0b1120;">
+
+    <!-- Nav -->
+    <nav style="position:sticky; top:0; z-index:100; background:rgba(11,17,32,0.85); backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,0.05); padding:0 2rem;">
+        <div style="max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:56px;">
+            <a href="/" style="display:flex; align-items:center; gap:0.5rem; text-decoration:none;">
+                <MudIcon Icon="@Icons.Material.Filled.Cloud" Style="font-size:22px; color:#818cf8;" />
+                <span style="font-size:1.05rem; font-weight:700; color:#f1f5f9; letter-spacing:-0.01em;">WeatherApp</span>
+            </a>
+            <div style="display:flex; gap:0.25rem;">
+                <a href="/" style="padding:0.4rem 0.85rem; border-radius:6px; color:#94a3b8; text-decoration:none; font-size:0.82rem; font-weight:500;">Home</a>
+                <a href="https://learn.microsoft.com/aspnet/core/" target="_blank" style="padding:0.4rem 0.85rem; border-radius:6px; color:#94a3b8; text-decoration:none; font-size:0.82rem; font-weight:500;">Docs</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main style="flex:1;">
+        @Body
+    </main>
+
+    <!-- Footer -->
+    <footer style="padding:1rem 0; border-top:1px solid rgba(255,255,255,0.04); text-align:center;">
+        <span style="font-size:0.72rem; color:#475569;">© 2025 WeatherApp</span>
+    </footer>
+</div>
+
+@code {
+    private readonly MudTheme _theme = new()
+    {
+        PaletteDark = new PaletteDark()
+        {
+            Primary = "#6366f1",
+            Secondary = "#8b5cf6",
+            Background = "#0b1120",
+            Surface = "#111827",
+            TextPrimary = "#f1f5f9",
+            TextSecondary = "#64748b",
+        },
+        Typography = new Typography()
+        {
+            Default = new DefaultTypography() { FontFamily = ["Inter", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"] },
+        }
+    };
+}
