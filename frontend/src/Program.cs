@@ -19,6 +19,7 @@ namespace WeatherApp.Frontend
             builder.Services.AddMudServices();
 
             builder.Services.AddScoped<IOpenMeteoService, OpenMeteoService>();
+            builder.Services.AddScoped<ActivityService>();
 
             await builder.Build().RunAsync();
         }
