@@ -36,14 +36,14 @@ const absences = [
   {
     day_id: weekdayIds["0"], // Monday
     ranges: [
-      { start: new Date("1970-01-01T11:00:00Z"), end: new Date("1970-01-01T13:00:00Z"), place_id: placeIds["0"] },
-      { start: new Date("1970-01-01T15:00:00Z"), end: new Date("1970-01-01T17:00:00Z"), place_id: placeIds["1"] }
+      { start: new Date("1970-01-01T11:00:00Z"), end: new Date("1970-01-01T13:00:00Z"), place_id: placeIds["0"], recurring: true },
+      { start: new Date("1970-01-01T15:00:00Z"), end: new Date("1970-01-01T17:00:00Z"), place_id: placeIds["1"], recurring: false }
     ]
   },
   {
     day_id: weekdayIds["1"], // Tuesday
     ranges: [
-      { start: new Date("1970-01-01T09:00:00Z"), end: new Date("1970-01-01T12:00:00Z"), place_id: placeIds["0"] }
+      { start: new Date("1970-01-01T09:00:00Z"), end: new Date("1970-01-01T12:00:00Z"), place_id: placeIds["0"], recurring: true }
     ]
   }
   // Weitere Tage nach Bedarf…
