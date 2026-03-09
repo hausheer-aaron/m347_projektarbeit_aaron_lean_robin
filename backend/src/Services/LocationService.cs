@@ -1,64 +1,56 @@
-﻿using WeatherApp.API.Models;
+﻿using MongoDB.Driver;
+using WeatherApp.API.Models;
 using WeatherApp.API.Services.Interfaces;
 
 namespace WeatherApp.API.Services;
 
 public sealed class LocationService : ILocationService
 {
-    private readonly object _lockObj = new object();
-    private readonly List<LocationItem> _items = new List<LocationItem>();
+    private readonly IMongoCollection<Location> _collection;
 
-    public LocationItem Create(Location dto)
+    public LocationService(IMongoCollection<Location> collection)
     {
-        LocationItem item = new LocationItem
+        _collection = collection;
+    }
+
+    public Location Create(Location dto)
+    {
+        Location item = new Location
         {
-            Id = Guid.NewGuid(),
             Name = dto.Name,
             Latitude = dto.Latitude,
-            Longitude = dto.Longitude,
-            UpdatedAtUtc = DateTimeOffset.UtcNow
+            Longitude = dto.Longitude
         };
 
-        lock (_lockObj)
-        {
-            _items.Add(item);
-        }
-
+        _collection.InsertOne(item);
         return item;
     }
 
-    public LocationItem? Update(Guid id, Location dto)
+    public Location? Update(string id, Location dto)
     {
-        lock (_lockObj)
+        FilterDefinition<Location> filter = Builders<Location>.Filter.Eq(x => x.Id, id);
+
+        UpdateDefinition<Location> update = Builders<Location>.Update
+            .Set(x => x.Name, dto.Name)
+            .Set(x => x.Latitude, dto.Latitude)
+            .Set(x => x.Longitude, dto.Longitude);
+
+        FindOneAndUpdateOptions<Location> options = new FindOneAndUpdateOptions<Location>
         {
-            LocationItem? existing = _items.FirstOrDefault(x => x.Id == id);
-            if (existing == null)
-            {
-                return null;
-            }
+            ReturnDocument = ReturnDocument.After
+        };
 
-            existing.Name = dto.Name;
-            existing.Latitude = dto.Latitude;
-            existing.Longitude = dto.Longitude;
-            existing.UpdatedAtUtc = DateTimeOffset.UtcNow;
-
-            return existing;
-        }
+        return _collection.FindOneAndUpdate(filter, update, options);
     }
 
-    public LocationItem? Get(Guid id)
+    public Location? Get(string id)
     {
-        lock (_lockObj)
-        {
-            return _items.FirstOrDefault(x => x.Id == id);
-        }
+        FilterDefinition<Location> filter = Builders<Location>.Filter.Eq(x => x.Id, id);
+        return _collection.Find(filter).FirstOrDefault();
     }
 
-    public IReadOnlyList<LocationItem> GetAll()
+    public IReadOnlyList<Location> GetAll()
     {
-        lock (_lockObj)
-        {
-            return _items.ToList();
-        }
+        return _collection.Find(Builders<Location>.Filter.Empty).ToList();
     }
 }

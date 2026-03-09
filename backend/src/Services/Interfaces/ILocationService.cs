@@ -4,8 +4,8 @@ namespace WeatherApp.API.Services.Interfaces;
 
 public interface ILocationService
 {
-    LocationItem Create(Location dto);
-    LocationItem? Update(Guid id, Location dto);
-    LocationItem? Get(Guid id);
-    IReadOnlyList<LocationItem> GetAll();
+    Location Create(Location dto);
+    Location? Update(string id, Location dto);
+    Location? Get(string id);
+    IReadOnlyList<Location> GetAll();
 }

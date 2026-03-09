@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using WeatherApp.API.Models;
 using WeatherApp.API.Services.Interfaces;
 
@@ -18,38 +19,66 @@ public sealed class LocationController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] Location dto)
     {
-        LocationItem created = _store.Create(dto);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        try
+        {
+            Location created = _store.Create(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+        catch (MongoException)
+        {
+            return StatusCode(500, new { message = "Database not reachable" });
+        }
     }
 
-    [HttpPut("{id:guid}")]
-    public IActionResult Update([FromRoute] Guid id, [FromBody] Location dto)
+    [HttpPut("{id}")]
+    public IActionResult Update([FromRoute] string id, [FromBody] Location dto)
     {
-        LocationItem? updated = _store.Update(id, dto);
-        if (updated == null)
+        try
         {
-            return NotFound(new { message = "Location not found" });
-        }
+            Location? updated = _store.Update(id, dto);
+            if (updated == null)
+            {
+                return NotFound(new { message = "Location not found" });
+            }
 
-        return Ok(updated);
+            return Ok(updated);
+        }
+        catch (MongoException)
+        {
+            return StatusCode(500, new { message = "Database not reachable" });
+        }
     }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        IReadOnlyList<LocationItem> all = _store.GetAll();
-        return Ok(all);
+        try
+        {
+            IReadOnlyList<Location> all = _store.GetAll();
+            return Ok(all);
+        }
+        catch (MongoException)
+        {
+            return StatusCode(500, new { message = "Database not reachable" });
+        }
     }
 
-    [HttpGet("{id:guid}")]
-    public IActionResult GetById([FromRoute] Guid id)
+    [HttpGet("{id}")]
+    public IActionResult GetById([FromRoute] string id)
     {
-        LocationItem? item = _store.Get(id);
-        if (item == null)
+        try
         {
-            return NotFound(new { message = "Location not found" });
-        }
+            Location? item = _store.Get(id);
+            if (item == null)
+            {
+                return NotFound(new { message = "Location not found" });
+            }
 
-        return Ok(item);
+            return Ok(item);
+        }
+        catch (MongoException)
+        {
+            return StatusCode(500, new { message = "Database not reachable" });
+        }
     }
 }

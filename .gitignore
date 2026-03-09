@@ -9,3 +9,5 @@ obj/
  
 # Konfiguration
 appsettings.Development.json
+
+/docker/data/.
