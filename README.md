@@ -24,4 +24,10 @@
 
   Open in Browser: localhost:8080
 
+ # Local Development with Compose
+ ## Build
+ - `docker compose --build -d`
+ ## Run
+ - `docker compose up -d`
+  
  
