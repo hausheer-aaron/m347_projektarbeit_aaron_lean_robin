@@ -20,8 +20,6 @@ namespace WeatherApp.Frontend
 
             builder.Services.AddScoped<IOpenMeteoService, OpenMeteoService>();
             builder.Services.AddScoped<ActivityService>();
-            builder.Services.AddScoped<IScheduleService, ScheduleService>();
-            builder.Services.AddScoped<ILocationService, LocationService>();
 
             await builder.Build().RunAsync();
         }
