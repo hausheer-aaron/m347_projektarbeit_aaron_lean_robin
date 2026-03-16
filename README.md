@@ -42,3 +42,18 @@ Zum manuellen Builden und Pushen der Images wird das Script `build-and-push.sh` 
 
 Zusätzlich ist eine GitLab CI/CD Pipeline eingerichtet. Immer wenn Änderungen in den `main` Branch gepusht werden, baut die Pipeline automatisch die Docker Images und pusht sie ebenfalls auf DockerHub. Für den Login werden die GitLab CI/CD Variablen `DOCKERHUB_USERNAME` und `DOCKERHUB_TOKEN` verwendet.
  
+## Cloud deployment
+
+Die Web-Applikation wird über den Cloud-Provider Railway öffentlich bereitgestellt. Dabei werden dieselben Docker Images verwendet, die zuvor auf DockerHub veröffentlicht wurden (`hausheeraaron/docker-backend` und `hausheeraaron/docker-frontend`).
+
+Um eine lokale Änderung der Applikation zu deployen, werden folgende Schritte durchgeführt:
+
+1. Änderungen lokal im Projekt durchführen.
+2. Änderungen committen und auf den `main` Branch pushen.
+3. Die GitLab CI/CD Pipeline baut automatisch neue Docker Images.
+4. Die Images werden auf DockerHub veröffentlicht.
+5. Der Service wird in Railway erneut deployt, damit die neuen Images verwendet werden.
+
+ - Backend: https://docker-backend-production-310a.up.railway.app/swagger/index.html
+
+ - Frontend: https://docker-frontend-production-23d8.up.railway.app/
