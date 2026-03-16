@@ -1,0 +1,21 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+
+stages:
+  - build
+
+build-and-push:
+  stage: build
+  script:
+    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_TOKEN"
+    - docker build -t hausheeraaron/docker-frontend:latest ./frontend
+    - docker build -t hausheeraaron/docker-backend:latest ./backend
+    - docker push hausheeraaron/docker-frontend:latest
+    - docker push hausheeraaron/docker-backend:latest
+  only:
+    - main
